@@ -1,0 +1,91 @@
+export const data = {
+  slug: "pizza-palace",
+  name: "Pizza Palace",
+  categories: ["Starters", "Pizzas", "Desserts", "Beverages"],
+  items: [
+    {
+      name: "Garlic Bread",
+      price: 150,
+      type: "veg",
+      category: "Starters",
+      description: "Toasted artisanal bread with garlic butter and herbs.",
+    },
+    {
+      name: "Chicken Wings",
+      price: 250,
+      type: "non-veg",
+      category: "Starters",
+    },
+    {
+      name: "Margherita Pizza",
+      price: 350,
+      type: "veg",
+      category: "Pizzas",
+      description:
+        "Classic Margherita with fresh tomatoes, mozzarella, and basil.",
+    },
+    {
+      name: "Pepperoni Pizza",
+      price: 450,
+      type: "non-veg",
+      category: "Pizzas",
+      description: "Loaded with savory pepperoni and melty mozzarella.",
+    },
+    {
+      name: "Chicken Tikka Pizza",
+      price: 550,
+      type: "non-veg",
+      category: "Pizzas",
+      description: "Grilled chicken tikka with creamy sauce and mozzarella.",
+    },
+    {
+      name: "Veggie Pizza",
+      price: 650,
+      type: "veg",
+      category: "Pizzas",
+      description: "Loaded with fresh vegetables and melty mozzarella.",
+    },
+    {
+      name: "Chocolate Lava Cake",
+      price: 250,
+      type: "veg",
+      category: "Desserts",
+    },
+    {
+      name: "Vanilla Lava Cake",
+      price: 250,
+      type: "veg",
+      category: "Desserts",
+    },
+    {
+      name: "Strawberry Lava Cake",
+      price: 250,
+      type: "veg",
+      category: "Desserts",
+    },
+    {
+      name: "Coca Cola",
+      price: 150,
+      type: "veg",
+      category: "Beverages",
+    },
+    {
+      name: "Pepsi",
+      price: 150,
+      type: "veg",
+      category: "Beverages",
+    },
+    {
+      name: "Fanta",
+      price: 150,
+      type: "veg",
+      category: "Beverages",
+    },
+    {
+      name: "Sprite",
+      price: 150,
+      type: "veg",
+      category: "Beverages",
+    },
+  ],
+};

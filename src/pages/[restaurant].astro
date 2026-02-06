@@ -1,0 +1,253 @@
+---
+import "../styles/global.css";
+import { allRestaurants } from "../data/index";
+
+export async function getStaticPaths() {
+  return allRestaurants.map((res) => ({
+    params: { restaurant: res.slug },
+    props: { data: res },
+  }));
+}
+
+const { data } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{data.name} Menu</title>
+    <meta name="description" content={`Explore the menu for ${data.name}.`} />
+  </head>
+  <body
+    class="bg-[#d0e8e4] min-h-screen font-sans text-teal-900 pb-10 selection:bg-teal-900 selection:text-white antialiased"
+  >
+    <!-- Sticky Header Wrapper -->
+    <div class="sticky top-0 z-50 bg-[#d0e8e4]">
+      <header
+        class="bg-white rounded-b-[2.5rem] px-5 py-6 shadow-sm pb-8 relative z-50"
+      >
+        <div class="max-w-7xl mx-auto">
+          <h1 class="text-3xl font-bold tracking-tight text-teal-950 mb-6">
+            {data.name}
+          </h1>
+
+          <!-- Controls -->
+          <div class="space-y-5">
+            <!-- Search -->
+            <input
+              type="text"
+              id="search"
+              placeholder="Search items..."
+              class="w-full px-5 py-3.5 bg-zinc-50 border-0 rounded-2xl text-teal-900 placeholder:text-teal-900/40 focus:outline-none focus:ring-2 focus:ring-teal-900/10 focus:bg-white transition-all shadow-inner"
+            />
+
+            <!-- Filters Container -->
+            <div class="flex flex-col gap-4">
+              <!-- Diet Toggles -->
+              <fieldset
+                class="flex items-center gap-4 text-sm font-medium text-teal-900/80 bg-zinc-50 px-4 py-2 rounded-xl self-start border border-zinc-100"
+              >
+                <legend class="sr-only">Dietary Preference</legend>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="diet"
+                    value="all"
+                    checked
+                    class="accent-teal-900 w-4 h-4"
+                  />
+                  <span>All</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="diet"
+                    value="veg"
+                    class="accent-green-600 w-4 h-4"
+                  />
+                  <span class="text-green-700">Veg</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="diet"
+                    value="non-veg"
+                    class="accent-red-600 w-4 h-4"
+                  />
+                  <span class="text-red-700">Non-Veg</span>
+                </label>
+              </fieldset>
+
+              <!-- Categories -->
+              <div class="overflow-x-auto -mx-5 px-5 py-1 scrollbar-hide">
+                <div
+                  class="flex gap-2 min-w-max"
+                  role="tablist"
+                  aria-label="Menu Categories"
+                >
+                  <button
+                    class="filter-btn active px-5 py-2.5 rounded-full text-sm font-bold bg-teal-900 text-white shadow-md transition-all scale-105"
+                    data-category="all"
+                    role="tab"
+                    aria-selected="true"
+                    aria-controls="menu-list"
+                  >
+                    All
+                  </button>
+                  {
+                    data.categories.map((category) => (
+                      <button
+                        class="filter-btn px-5 py-2.5 rounded-full text-sm font-bold bg-zinc-100 text-teal-900 hover:bg-zinc-200 transition-all"
+                        data-category={category}
+                        role="tab"
+                        aria-selected="false"
+                        aria-controls="menu-list"
+                      >
+                        {category}
+                      </button>
+                    ))
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+    </div>
+
+    <!-- Menu Grid -->
+    <main class="px-5 max-w-7xl mx-auto pt-6" id="menu-list">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {
+          data.items.map((item) => (
+            <article
+              class="menu-item group bg-white/70 backdrop-blur-sm border border-white/50 rounded-2xl p-5 hover:bg-white hover:shadow-md transition-all duration-300"
+              data-name={`${item.name.toLowerCase()} ${item.description ? item.description.toLowerCase() : ""}`}
+              data-category={item.category}
+              data-type={item.type}
+            >
+              <div class="flex justify-between items-start gap-3">
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-2 mb-1">
+                    <h2 class="font-bold text-lg text-teal-950 truncate pr-2">
+                      {item.name}
+                    </h2>
+                    <div
+                      class={`w-2 h-2 rounded-full flex-shrink-0 ${item.type === "veg" ? "bg-green-500" : "bg-red-500"}`}
+                      title={item.type}
+                    />
+                  </div>
+
+                  {item.description && (
+                    <p class="text-sm text-teal-900 leading-relaxed line-clamp-2 mb-3">
+                      {item.description}
+                    </p>
+                  )}
+
+                  <div class="flex items-center justify-between mt-auto">
+                    <span class="text-lg font-bold text-teal-900">
+                      ₹{item.price}
+                    </span>
+                    <span class="text-[10px] uppercase font-bold text-teal-950 tracking-wider bg-teal-100 px-2 py-1 rounded-md">
+                      {item.category}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+
+      <!-- No Results -->
+      <div id="no-results" class="hidden text-center py-12">
+        <p class="text-zinc-500">No items match your search.</p>
+      </div>
+    </main>
+
+    <script>
+      const search = document.getElementById("search") as HTMLInputElement;
+      const dietRadios = document.querySelectorAll('input[name="diet"]');
+      const categoryBtns = document.querySelectorAll(".filter-btn");
+      const items = document.querySelectorAll(".menu-item");
+      const noResults = document.getElementById("no-results");
+
+      let currentCategory = "all";
+
+      function filter() {
+        if (!search || !noResults) return;
+
+        const query = search.value.toLowerCase();
+
+        let diet = "all";
+        dietRadios.forEach((radio) => {
+          const r = radio as HTMLInputElement;
+          if (r.checked) diet = r.value;
+        });
+
+        let visibleCount = 0;
+
+        items.forEach((item) => {
+          const el = item as HTMLElement;
+
+          const nameData = el.getAttribute("data-name") || "";
+          const cat = el.getAttribute("data-category");
+          const type = el.getAttribute("data-type");
+
+          const matchSearch = nameData.includes(query);
+          const matchDiet = diet === "all" || type === diet;
+          const matchCat = currentCategory === "all" || cat === currentCategory;
+
+          if (matchSearch && matchDiet && matchCat) {
+            el.style.display = "block";
+            visibleCount++;
+          } else {
+            el.style.display = "none";
+          }
+        });
+
+        noResults.style.display = visibleCount === 0 ? "block" : "none";
+      }
+
+      if (search) search.addEventListener("input", filter);
+      dietRadios.forEach((r) => r.addEventListener("change", filter));
+
+      categoryBtns.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const target = e.currentTarget as HTMLButtonElement;
+
+          categoryBtns.forEach((b) => {
+            b.classList.remove(
+              "bg-teal-900",
+              "text-white",
+              "shadow-md",
+              "scale-105",
+            );
+            b.classList.add("bg-zinc-100", "text-teal-900");
+            b.setAttribute("aria-selected", "false");
+          });
+
+          target.classList.remove("bg-zinc-100", "text-teal-900");
+          target.classList.add(
+            "bg-teal-900",
+            "text-white",
+            "shadow-md",
+            "scale-105",
+          );
+          target.setAttribute("aria-selected", "true");
+
+          const cat = target.getAttribute("data-category");
+          if (cat) currentCategory = cat;
+
+          target.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+            inline: "center",
+          });
+          filter();
+        });
+      });
+    </script>
+  </body>
+</html>
