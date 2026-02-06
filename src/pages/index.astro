@@ -7,11 +7,12 @@ import { allRestaurants } from "../data/index";
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Menu Please</title>
+    <meta
+      name="description"
+      content="Select a restaurant to view their digital menu."
+    />
   </head>
   <body
     class="bg-[#d0e8e4] min-h-screen font-sans text-teal-900 pb-10 antialiased selection:bg-teal-900 selection:text-white"
@@ -26,7 +27,7 @@ import { allRestaurants } from "../data/index";
             <h1 class="text-3xl font-bold tracking-tight text-teal-950">
               Menu Please
             </h1>
-            <p class="text-sm text-teal-800/60 mt-1">
+            <p class="text-sm text-teal-900/80 mt-1">
               Select a restaurant to view menu
             </p>
           </div>
@@ -46,7 +47,7 @@ import { allRestaurants } from "../data/index";
                     {restaurant.name}
                   </h2>
                   <div class="flex items-center gap-2 mt-auto">
-                    <span class="text-xs font-bold uppercase tracking-wider text-teal-900/50 bg-white/60 px-2 py-1 rounded-md">
+                    <span class="text-xs font-bold uppercase tracking-wider text-teal-950 bg-teal-100 px-2 py-1 rounded-md">
                       View Menu &rarr;
                     </span>
                   </div>
@@ -60,7 +61,7 @@ import { allRestaurants } from "../data/index";
       <!-- Empty State (just in case) -->
       {
         allRestaurants.length === 0 && (
-          <div class="text-center py-20 text-teal-900/50">
+          <div class="text-center py-20 text-teal-900/60">
             <p>No restaurants available yet.</p>
           </div>
         )
