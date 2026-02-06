@@ -88,7 +88,7 @@ const { data } = Astro.props;
                   aria-label="Menu Categories"
                 >
                   <button
-                    class="filter-btn active px-5 py-2.5 rounded-full text-sm font-bold bg-teal-900 text-white shadow-md transition-all scale-105"
+                    class="filter-btn active px-5 py-2.5 rounded-full text-sm font-bold bg-teal-900 text-white shadow-md transition-all scale-105 hover:bg-teal-800"
                     data-category="all"
                     role="tab"
                     aria-selected="true"
@@ -174,6 +174,20 @@ const { data } = Astro.props;
       const items = document.querySelectorAll(".menu-item");
       const noResults = document.getElementById("no-results");
 
+      // Classes for active/inactive states
+      const activeClasses = [
+        "bg-teal-900",
+        "text-white",
+        "shadow-md",
+        "scale-105",
+        "hover:bg-teal-800",
+      ];
+      const inactiveClasses = [
+        "bg-zinc-100",
+        "text-teal-900",
+        "hover:bg-zinc-200",
+      ];
+
       let currentCategory = "all";
 
       function filter() {
@@ -219,23 +233,13 @@ const { data } = Astro.props;
           const target = e.currentTarget as HTMLButtonElement;
 
           categoryBtns.forEach((b) => {
-            b.classList.remove(
-              "bg-teal-900",
-              "text-white",
-              "shadow-md",
-              "scale-105",
-            );
-            b.classList.add("bg-zinc-100", "text-teal-900");
+            b.classList.remove(...activeClasses);
+            b.classList.add(...inactiveClasses);
             b.setAttribute("aria-selected", "false");
           });
 
-          target.classList.remove("bg-zinc-100", "text-teal-900");
-          target.classList.add(
-            "bg-teal-900",
-            "text-white",
-            "shadow-md",
-            "scale-105",
-          );
+          target.classList.remove(...inactiveClasses);
+          target.classList.add(...activeClasses);
           target.setAttribute("aria-selected", "true");
 
           const cat = target.getAttribute("data-category");
