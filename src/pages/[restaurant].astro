@@ -24,7 +24,7 @@ const { data } = Astro.props;
     class="bg-[#d0e8e4] min-h-screen font-sans text-teal-900 pb-10 selection:bg-teal-900 selection:text-white antialiased"
   >
     <!-- Sticky Header Wrapper -->
-    <div class="sticky top-0 z-50 bg-[#d0e8e4]">
+    <div id="sticky-header" class="sticky top-0 z-50">
       <header
         class="bg-white rounded-b-[2.5rem] px-5 py-6 shadow-sm pb-8 relative z-50"
       >
@@ -253,6 +253,34 @@ const { data } = Astro.props;
           filter();
         });
       });
+
+      // Mobile Scroll-Aware Header
+      const header = document.getElementById("sticky-header");
+      let lastScrollY = window.scrollY;
+      const threshold = 250;
+
+      if (header) {
+        window.addEventListener("scroll", () => {
+          // Only enable on mobile (standard tailwind sm breakpoint is 640px)
+          if (window.innerWidth >= 640) {
+            header.style.transform = "translateY(0)";
+            return;
+          }
+
+          const currentScrollY = window.scrollY;
+
+          // Scrolling down & past threshold
+          if (currentScrollY > lastScrollY && currentScrollY > threshold) {
+            header.style.transform = "translateY(-95%)"; // Collapse
+          }
+          // Scrolling up
+          else if (currentScrollY < lastScrollY) {
+            header.style.transform = "translateY(0)"; // Expand
+          }
+
+          lastScrollY = currentScrollY;
+        });
+      }
     </script>
   </body>
 </html>
